@@ -27,9 +27,7 @@ const extractTitle = (prompt: string): string => {
 
 function App() {
   const [apiKey, setApi] = useState(
-    () =>
-      localStorage.getItem("gemini_api_key") ??
-      "",
+    () => localStorage.getItem("gemini_api_key") ?? "",
   );
   const [generationState, setGenerationState] = useState({
     status: "idle",
@@ -40,8 +38,8 @@ function App() {
 
   useEffect(() => {
     if (!prompt) return;
-    setGenerationState({ status: "loading" });
     async function main() {
+      setGenerationState({ status: "loading" });
       const ai = new GoogleGenAI({
         apiKey: apiKey,
       });
