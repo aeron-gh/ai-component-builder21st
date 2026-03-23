@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/genai": "^1.46.0",
     "firebase": "^12.10.0",
+    "genai": "^0.0.18",
     "openai": "^6.32.0",
     "prism-react-renderer": "^2.4.1",
     "react": "^19.2.4",
