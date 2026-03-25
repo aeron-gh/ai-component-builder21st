@@ -1,11 +1,8 @@
 import { useState } from "react";
 
-const Leftbar = ({ setPrompt ,setApi}) => {
+const Leftbar = ({ setPrompt, setApi}) => {
   const [apikey, setapikey] = useState("");
   const [prompt, setprompt] = useState("");
-
-  console.log(apikey);
-  console.log(prompt);
 
   return (
     <div style={{ border: "2px black solid", width: "300px", height: "100vh" }}>
