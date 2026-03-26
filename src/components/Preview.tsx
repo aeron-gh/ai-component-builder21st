@@ -1,29 +1,62 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 const Preview = ({ generationState }) => {
+  const [preview, setPeview] = useState(true);
+
   return (
     <div style={{ border: "2px solid black", flex: "1" }}>
-      <div className="flex-1 flex items-center justify-center p-8">
-        {generationState.status === "idle" && (
-          <p className="text-gray-500">Describe a component to generate code</p>
-        )}
-        {generationState.status === "loading" && (
-          <div className="flex flex-col items-center gap-3">
-            <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-gray-400">Generating...</p>
-          </div>
-        )}
-        {generationState.status === "error" && (
-          <p className="text-red-400">{generationState.message}</p>
-        )}
-        {generationState.status === "success" && (
-          <div className="max-w-2xl w-full">
-            <pre>
+      <button
+        style={{ border: "2px solid black" }}
+        onClick={() => {
+          setPeview(false);
+        }}
+      >
+        show me code
+      </button>
+      <button
+        style={{ border: "2px solid black" }}
+        onClick={() => {
+          setPeview(true);
+        }}
+      >
+        Preview of code
+      </button>
+      {preview ? (
+        <div className="flex-1 flex items-center justify-center p-8">
+          {generationState.status === "idle" && (
+            <p className="text-gray-500">
+              Describe a component to generate code
+            </p>
+          )}
+          {generationState.status === "loading" && (
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm text-gray-400">Generating...</p>
+            </div>
+          )}
+          {generationState.status === "error" && (
+            <p className="text-red-400">{generationState.message}</p>
+          )}
+          {generationState.status === "success" && (
+            <div
+              className="max-w-2xl w-full"
+              style={{ border: "2px solid black", height: "500px" }}
+            >
               <WebPreview code={generationState.code}></WebPreview>
-            </pre>
-          </div>
-        )}
-      </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div style={{ maxWidth: "400px" }}>
+          <pre>
+            {`function App(){
+              return (
+                ${generationState.code}
+              )
+            }`}
+          </pre>
+        </div>
+      )}
     </div>
   );
 };
@@ -64,15 +97,15 @@ const buildSrcdoc = (jsxCode: string): string => `
 </html>`;
 
 const WebPreview = ({ code }: { code: string }) => {
-  
   const srcdoc = useMemo(() => buildSrcdoc(code), [code]);
   return (
-    <div >
+    <div>
       <iframe
         srcDoc={srcdoc}
         sandbox="allow-scripts"
         title="Component Preview"
         className="w-full h-full border-0"
+        style={{ border: "2px solid black", height: "500px" }}
       />
     </div>
   );
