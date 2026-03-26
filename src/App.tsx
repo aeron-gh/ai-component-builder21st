@@ -57,8 +57,7 @@ function App() {
   useEffect(() => {
     if (!prompt) return;
     async function main() {
-      setGenerationState({ status: "loading" });
-
+      
       // const ai = new GoogleGenAI({
       //   apiKey: apiKey,
       // });
@@ -66,33 +65,39 @@ function App() {
       //   model: "gemma-3-1b",
       //   contents: prompt,
       // });
-
-      const client = new OpenAI({
-        apiKey: apiKey,
-        baseURL: "https://api.groq.com/openai/v1",
-        dangerouslyAllowBrowser: true,
-      });
-
-      const response = await client.responses.create({
-        model: "openai/gpt-oss-20b",
-        reasoning: { effort: "medium" }, // optional, Groq-specific
-        input: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: prompt },
-        ],
-      });
-
-      const raw = response.output_text;
-      const code = cleanGeneratedCode(raw);
-
-      if (!code) {
-        setGenerationState({
-          status: "error",
-          message: "No code was generated. Try a different prompt.",
+      try {
+        setGenerationState({ status: "loading" });
+        const client = new OpenAI({
+          apiKey: apiKey,
+          baseURL: "https://api.groq.com/openai/v1",
+          dangerouslyAllowBrowser: true,
         });
-        return;
+
+        const response = await client.responses.create({
+          model: "openai/gpt-oss-20b",
+          reasoning: { effort: "medium" }, // optional, Groq-specific
+          input: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: prompt },
+          ],
+        });
+
+        const raw = response.output_text;
+        const code = cleanGeneratedCode(raw);
+
+        if (!code) {
+          setGenerationState({
+            status: "error",
+            message: "No code was generated. Try a different prompt.",
+          });
+          return;
+        }
+        setGenerationState({ status: "success", code, prompt });
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Generation failed";
+        setGenerationState({ status: "error", message });
       }
-      setGenerationState({ status: "success", code, prompt });
     }
     main();
   }, [prompt, apiKey]);
