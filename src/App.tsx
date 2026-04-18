@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Leftbar from "./components/Leftbar";
 import Preview from "./components/Preview";
 import Rightbar from "./components/Rightbar";
@@ -28,7 +28,7 @@ const extractTitle = (prompt: string): string => {
   return words.length > 50 ? words.slice(0, 50) + "..." : words;
 };
 
-const systemPrompt = `
+const systemPrompt: string = `
 You are a JSX component generator for React 18. Follow these rules:
 
 1. Output only valid JSX for a functional component body.
@@ -43,7 +43,7 @@ You are a JSX component generator for React 18. Follow these rules:
    );
 `;
 
-function App() {
+const App: React.FC = () => {
   const [apiKey, setApi] = useState(
     () => localStorage.getItem("gemini_api_key") ?? apiUrl,
   );
@@ -57,7 +57,6 @@ function App() {
   useEffect(() => {
     if (!prompt) return;
     async function main() {
-      
       // const ai = new GoogleGenAI({
       //   apiKey: apiKey,
       // });
@@ -149,11 +148,11 @@ function App() {
 
   return (
     <div style={{ display: "flex" }}>
-      <Leftbar setPrompt={setPrompt} setApi={setApi}></Leftbar>
-      <Preview generationState={generationState}></Preview>
-      <Rightbar></Rightbar>
+      <Leftbar setPrompt={setPrompt} setApi={setApi} />
+      <Preview generationState={generationState} />
+      <Rightbar/>
     </div>
   );
-}
+};
 
 export default App;

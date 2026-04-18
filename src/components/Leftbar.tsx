@@ -15,7 +15,7 @@ const Leftbar = ({ setPrompt, setApi }) => {
         <div className="flex gap-1">
           <input
             type="password"
-            placeholder="Enter yo40ur Gemini API key"
+            placeholder="Enter your Gemini API key"
             className="flex-1 px-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             value={apikey}
             onChange={(e) => setapikey(e.target.value)}
